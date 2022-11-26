@@ -1,35 +1,31 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.4;
+pragma solidity ^0.8.9;
 
 import "@openzeppelin/contracts/governance/Governor.sol";
-import "@openzeppelin/contracts/governance/extensions/GovernorSettings.sol";
 import "@openzeppelin/contracts/governance/extensions/GovernorCountingSimple.sol";
 import "@openzeppelin/contracts/governance/extensions/GovernorVotes.sol";
 import "@openzeppelin/contracts/governance/extensions/GovernorVotesQuorumFraction.sol";
 
-contract SigningPartyGovernor is Governor, GovernorSettings, GovernorCountingSimple, GovernorVotes, GovernorVotesQuorumFraction {
+contract SigningPartyGovernor is Governor, GovernorCountingSimple, GovernorVotes, GovernorVotesQuorumFraction {
     constructor(IVotes _token)
-    Governor("signingPartyGovernor")
-    GovernorSettings(1 /* 1 block */, 45818 /* 1 week */, 0)
+    Governor("SigningPartyGovernor")
     GovernorVotes(_token)
     GovernorVotesQuorumFraction(4)
     {}
 
+    //Delay since proposal is created until voting starts.
+    function votingDelay() public pure override returns (uint256) {
+        return 1; // 1 block: ETh ~12s
+    }
+
+    //Length of period during which people can cast their vote.
+    function votingPeriod() public pure override returns (uint256) {
+        return 50400; // 1 week
+    }
+
     // The following functions are overrides required by Solidity.
 
-    function votingDelay() public view override(IGovernor, GovernorSettings) returns (uint256) {
-        return super.votingDelay();
-    }
-
-    function votingPeriod() public view override(IGovernor, GovernorSettings) returns (uint256) {
-        return super.votingPeriod();
-    }
-
-    function quorum(uint256 blockNumber) public view override(IGovernor, GovernorVotesQuorumFraction) returns (uint256) {
+    function quorum(uint256 blockNumber) public view override(IGovernor, GovernorVotesQuorumFraction) returns (uint256){
         return super.quorum(blockNumber);
-    }
-
-    function proposalThreshold() public view override(Governor, GovernorSettings) returns (uint256) {
-        return super.proposalThreshold();
     }
 }
