@@ -30,7 +30,7 @@ describe("SigningParty", function () {
         const newProposal = {
             grantAmount: grant,
             transferCalldata: governanceToken.interface.encodeFunctionData('mint', [owner.address, grant]),
-            descriptionHash: ethers.utils.id("Proposal #2: Give owner some tokens")
+            descriptionHash: ethers.utils.id("Proposal #1: Give owner some tokens")
         };
 
         const proposeTx = await governor.propose(
@@ -47,14 +47,23 @@ describe("SigningParty", function () {
         // need to wait for one block before voting has opened
         await hardhat.network.provider.send('evm_mine');
 
+        /*// before delegation
+        console.log(await governanceToken.getVotes(userA.address));
+        console.log(await governanceToken.getVotes(userB.address));
+        console.log(await governanceToken.getVotes(userC.address));
+         */
+
+        // delegate votes
         await governanceToken.connect(userA).delegate(userA.address);
         await governanceToken.connect(userB).delegate(userB.address);
         await governanceToken.connect(userC).delegate(userC.address);
         await governanceToken.delegate(owner.address);
 
+        /*// after delegation
         console.log(await governanceToken.getVotes(userA.address));
         console.log(await governanceToken.getVotes(userB.address));
         console.log(await governanceToken.getVotes(userC.address));
+         */
 
         // vote
         await governor.connect(userA).castVote(proposalId, 0);
@@ -62,6 +71,8 @@ describe("SigningParty", function () {
         await governor.connect(userC).castVote(proposalId, 2);
         await governor.connect(owner).castVote(proposalId, 2);
 
+        await hardhat.network.provider.send('evm_mine');
+        await hardhat.network.provider.send('evm_mine');
         const votingResults = await governor.proposalVotes(proposalId);
 
 /*
@@ -82,6 +93,7 @@ describe("SigningParty", function () {
             expect(await governanceToken.balanceOf(userA.address)).to.equal(100);
         });
     });
+
     describe("Voting", function () {
         it("Should return voting results correctly", async function () {
             const { governor, proposalId, votingResults } = await loadFixture(deployBasics);
