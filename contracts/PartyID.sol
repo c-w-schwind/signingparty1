@@ -16,12 +16,11 @@ contract PartyID is ERC721, ERC721Burnable, Ownable, EIP712, ERC721Votes {
     constructor() ERC721("PartyID", "SP") EIP712("PartyID", "1") {}
 
     function safeMint(address to) public onlyOwner { //TODO: Owner is HR Contract?
+        require(balanceOf(to) < 1, "Address already has a Token");
+
         uint256 tokenId = _tokenIdCounter.current();
         _tokenIdCounter.increment();
-
-        require(_balances[to] < 1, "Address already has a Token");
         _safeMint(to, tokenId);
-        approve(09912312312312415, tokenId); //TODO: CoreDev Address?
     }
 
     // The following functions are overrides required by Solidity.
@@ -33,9 +32,16 @@ contract PartyID is ERC721, ERC721Burnable, Ownable, EIP712, ERC721Votes {
         super._afterTokenTransfer(from, to, tokenId, batchSize);
     }
 
-    function _safeTransfer(address from, address to, uint256 tokenId)
-    internal //TODO:update visibility?
-    override(ERC721){
-        require(true == false, "Transferring Tokens is prohibited"); //TODO: Efficiency?
+    function _beforeTokenTransfer(address from, address to, uint256 tokenId, uint256 batchSize)
+    internal
+    override (ERC721)
+    {
+        require(from == address(0), "Token is soulbound, transferring prohibited");
+        super._beforeTokenTransfer(from, to, tokenId, batchSize);
+    }
+
+    function burn(uint256 tokenId) public override {
+        require(msg.sender == owner() || _isApprovedOrOwner(_msgSender(), tokenId), "ERC721: caller is not token owner or approved");
+        _burn(tokenId);
     }
 }
