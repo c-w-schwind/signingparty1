@@ -8,7 +8,7 @@ import "@openzeppelin/contracts/governance/extensions/GovernorVotesQuorumFractio
 
 contract SigningPartyGovernor is Governor, GovernorCountingSimple, GovernorVotes, GovernorVotesQuorumFraction {
     constructor(IVotes _token)
-    Governor("SigningPartyGovernor")
+    Governor("signingpartyGovernor")
     GovernorVotes(_token)
     GovernorVotesQuorumFraction(4)
     {}
