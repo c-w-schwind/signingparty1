@@ -8,7 +8,7 @@ import "@openzeppelin/contracts/utils/cryptography/draft-EIP712.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/draft-ERC721Votes.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
 
-contract PartyID is ERC721, ERC721Burnable, Ownable, EIP712, ERC721Votes {
+contract SIGNR is ERC721, ERC721Burnable, Ownable, EIP712, ERC721Votes {
     using Counters for Counters.Counter;
 //TODO: transfer HUBER ownership
 //TODO: Revoke ownership
