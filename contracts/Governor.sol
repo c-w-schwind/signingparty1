@@ -15,12 +15,12 @@ contract SigningPartyGovernor is Governor, GovernorCountingSimple, GovernorVotes
 
     //Delay since proposal is created until voting starts.
     function votingDelay() public pure override returns (uint256) {
-        return 1; // 1 block: ETh ~12s
+        return 1;
     }
 
     //Length of period during which people can cast their vote.
     function votingPeriod() public pure override returns (uint256) {
-        return 50400; // 1 week
+        return 302400; //1 Week (Polygon 1 Block = 2s)
     }
 
     function proposalThreshold() public pure override returns (uint256) {

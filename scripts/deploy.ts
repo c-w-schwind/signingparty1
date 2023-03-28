@@ -1,20 +1,22 @@
 import { ethers } from "hardhat";
 
+
 async function main() {
   const [deployer] = await ethers.getSigners();
 
   console.log("Deployer address: ", deployer.address)
   console.log("Account Balance: ", (await deployer.getBalance()).toString());
 
-  const PartyID = await ethers.getContractFactory("PartyID");
-  const partyID = await PartyID.deploy();
-  await partyID.deployed();
+  const SIGNR = await ethers.getContractFactory("SIGNR");
+  const SIGNR_contract = await SIGNR.deploy();
+  await SIGNR_contract.deployed();
 
-  console.log(`ERC721 deployed to ${partyID.address}`);
+
+  console.log(`ERC721 deployed to ${SIGNR_contract.address}`);
 
 
   const SigningPartyGovernor = await ethers.getContractFactory("SigningPartyGovernor");
-  const signingPartyGovernor = await SigningPartyGovernor.deploy(partyID.address);
+  const signingPartyGovernor = await SigningPartyGovernor.deploy(SIGNR_contract.address);
   await signingPartyGovernor.deployed();
 
   console.log(`Governor deployed to ${signingPartyGovernor.address}`);

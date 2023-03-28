@@ -10,12 +10,13 @@ import "@openzeppelin/contracts/utils/Counters.sol";
 
 contract PartyID is ERC721, ERC721Burnable, Ownable, EIP712, ERC721Votes {
     using Counters for Counters.Counter;
-
+//TODO: transfer HUBER ownership
+//TODO: Revoke ownership
     Counters.Counter private _tokenIdCounter;
 
-    constructor() ERC721("PartyID", "SP") EIP712("PartyID", "1") {}
+    constructor() ERC721("SIGNR", "SIGNR") EIP712("SIGNR", "1") {}
 
-    function safeMint(address to) public onlyOwner {//TODO: Owner is HR Contract?
+    function safeMint(address to) public onlyOwner {
         require(balanceOf(to) < 1, "Address already has a Token");
 
         uint256 tokenId = _tokenIdCounter.current();
