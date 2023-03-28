@@ -23,6 +23,10 @@ contract SigningPartyGovernor is Governor, GovernorCountingSimple, GovernorVotes
         return 50400; // 1 week
     }
 
+    function proposalThreshold() public pure override returns (uint256) {
+        return 1;
+    }
+
     // The following functions are overrides required by Solidity.
 
     function quorum(uint256 blockNumber) public view override(IGovernor, GovernorVotesQuorumFraction) returns (uint256){
