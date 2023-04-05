@@ -10,8 +10,7 @@ import "@openzeppelin/contracts/utils/Counters.sol";
 
 contract SIGNR is ERC721, ERC721Burnable, Ownable, EIP712, ERC721Votes {
     using Counters for Counters.Counter;
-//TODO: transfer HUBER ownership
-//TODO: Revoke ownership
+
     Counters.Counter private _tokenIdCounter;
 
     constructor() ERC721("SIGNR", "SIGNR") EIP712("SIGNR", "1") {}
