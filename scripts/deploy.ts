@@ -8,7 +8,7 @@ async function main() {
   console.log("Account Balance: ", (await deployer.getBalance()).toString());
 
   const SIGNR = await ethers.getContractFactory("SIGNR");
-  const SIGNR_contract = await SIGNR.deploy();
+  const SIGNR_contract = await SIGNR.deploy("ipfs://QmVcuFVAyks1pnJ1F4Xm6bqRDCeZSaUEKhctwByEVNcgTZ");
   await SIGNR_contract.deployed();
 
 
